@@ -7,7 +7,10 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button onclick="handlerEdit()">Edit</button>
+    <button onclick="handlerDetails()">Details</button>
+    <button onclick="handlerDelete()">Delete</button>
+    <button onclick="handlerCreate()">Create</button>
 </p>
 <table class="table">
     <thead>
@@ -20,16 +23,47 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr onclick="selectRow(@item.TypeId)" id="@item.TypeId">
             <td>
                 @Html.DisplayFor(modelItem => item.TypeName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TypeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TypeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TypeId">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+        var selectedId;
+        function selectRow(idObject) {
+            if (selectedId) {
+                document.getElementById(selectedId).className = "";
+            }
+            selectedId = idObject;
+            document.getElementById(idObject).className = "active-row";
+        }
+
+        function handlerDetails() {
+            if (selectedId) {
+                window.location.href = "/AccountTypes/Details/" + selectedId;
+            }
+        }
+
+        function handlerDelete() {
+            if (selectedId) {
+                window.location.href = "/AccountTypes/Delete/" + selectedId;
+            }
+        }
+
+        function handlerEdit() {
+            if (selectedId) {
+                window.location.href = "/AccountTypes/Edit/" + selectedId;
+            }
+        }
+
+        function handlerCreate() {
+            window.location.href = "/AccountTypes/Create";
+        }
+    </script>
+}
