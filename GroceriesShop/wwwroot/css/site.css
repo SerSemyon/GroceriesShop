@@ -13,16 +13,27 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url('../images/Shawarma.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.pageback {
+    background-color: rgba(250,250,250,0.6);
+}
+
+tr {
+    background-color: lightyellow;
 }
 
 tr:hover {
-    background-color: lightyellow;
+    background-color: snow;
 }
 
 .active-row {
@@ -32,3 +43,12 @@ tr:hover {
     .active-row:hover {
         background-color: aquamarine;
     }
+
+button {
+    text-decoration: none;
+    text-align: center;
+    color: chocolate;
+    font: bold 18px arial;
+    padding: 9px 0 9px 9px;
+    width: 150px;
+}

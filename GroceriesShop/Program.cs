@@ -118,6 +118,12 @@ namespace GroceriesShop
                 return Results.Redirect(returnUrl ?? "/");
             });
 
+            app.MapGet("/logout", async (HttpContext context) =>
+            {
+                await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Results.Redirect("/login");
+            });
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
