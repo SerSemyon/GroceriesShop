@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroceriesShop;
 using GroceriesShop.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroceriesShop.Controllers
 {
+    [Authorize]
     public class ShoppingCartsController : Controller
     {
         private readonly GroceriesContext _context;

@@ -7,10 +7,17 @@
 <h1>Index</h1>
 
 <p>
-    <button onclick="handlerEdit()">Edit</button>
-    <button onclick="handlerDetails()">Details</button>
-    <button onclick="handlerDelete()">Delete</button>
-    <button onclick="handlerCreate()">Create</button>
+    @if (User.IsInRole("2"))
+    {
+        <button onclick="handlerEdit()">Edit</button>
+        <button onclick="handlerDetails()">Details</button>
+        <button onclick="handlerDelete()">Delete</button>
+        <button onclick="handlerCreate()">Create</button>
+    }
+    else
+    {
+        <button onclick="handlerDetails()">Details</button>
+    }
 </p>
 <table class="table">
     <thead>
