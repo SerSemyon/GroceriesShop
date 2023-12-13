@@ -4,38 +4,35 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Меню</h1>
 
 <p>
     @if (User.IsInRole("2"))
     {
-        <button onclick="handlerEdit()">Edit</button>
-        <button onclick="handlerDetails()">Details</button>
-        <button onclick="handlerDelete()">Delete</button>
-        <button onclick="handlerCreate()">Create</button>
+        <button onclick="handlerEdit()">Изменить</button>
+        <button onclick="handlerDetails()">О товаре</button>
+        <button onclick="handlerDelete()">Удалить</button>
+        <button onclick="handlerCreate()">Создать</button>
     }
     else
     {
-        <button onclick="handlerDetails()">Details</button>
+        <button onclick="handlerDetails()">О товаре</button>
     }
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Название товара
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Цена
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FilePath)
+                Категория
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                Продавец
             </th>
         </tr>
     </thead>
@@ -49,13 +46,10 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FilePath)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seller.AccountId)
+                @Html.DisplayFor(modelItem => item.Seller.Name)
             </td>
         </tr>
 }
