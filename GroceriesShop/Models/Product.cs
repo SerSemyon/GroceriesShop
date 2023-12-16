@@ -5,7 +5,7 @@ namespace GroceriesShop.Models;
 
 public partial class Product
 {
-    public int ProductId { get; set; }
+    public int Id { get; set; }
 
     public string? Name { get; set; }
 

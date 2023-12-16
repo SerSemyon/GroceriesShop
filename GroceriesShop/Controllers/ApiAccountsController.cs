@@ -21,14 +21,12 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: api/ApiAccounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
             return await _context.Accounts.ToListAsync();
         }
 
-        // GET: api/ApiAccounts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
@@ -42,12 +40,10 @@ namespace GroceriesShop.Controllers
             return account;
         }
 
-        // PUT: api/ApiAccounts/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccount(int id, Account account)
         {
-            if (id != account.AccountId)
+            if (id != account.Id)
             {
                 return BadRequest();
             }
@@ -73,18 +69,15 @@ namespace GroceriesShop.Controllers
             return NoContent();
         }
 
-        // POST: api/ApiAccounts
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAccount", new { id = account.AccountId }, account);
+            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
         }
 
-        // DELETE: api/ApiAccounts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
@@ -102,7 +95,7 @@ namespace GroceriesShop.Controllers
 
         private bool AccountExists(int id)
         {
-            return _context.Accounts.Any(e => e.AccountId == id);
+            return _context.Accounts.Any(e => e.Id == id);
         }
     }
 }

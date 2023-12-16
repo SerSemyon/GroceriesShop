@@ -19,13 +19,11 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: Categories
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +32,7 @@ namespace GroceriesShop.Controllers
             }
 
             var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -43,18 +41,14 @@ namespace GroceriesShop.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,Name,FilePath")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,FilePath")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +59,6 @@ namespace GroceriesShop.Controllers
             return View(category);
         }
 
-        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,14 +74,11 @@ namespace GroceriesShop.Controllers
             return View(category);
         }
 
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Name,FilePath")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,FilePath")] Category category)
         {
-            if (id != category.CategoryId)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -102,7 +92,7 @@ namespace GroceriesShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.CategoryId))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +106,6 @@ namespace GroceriesShop.Controllers
             return View(category);
         }
 
-        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,7 +114,7 @@ namespace GroceriesShop.Controllers
             }
 
             var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -134,7 +123,6 @@ namespace GroceriesShop.Controllers
             return View(category);
         }
 
-        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -151,7 +139,7 @@ namespace GroceriesShop.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.CategoryId == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

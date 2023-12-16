@@ -22,7 +22,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            <tr onclick="selectRow(@item.CategoryId)" id="@item.CategoryId">
+            <tr onclick="selectRow(@item.Id)" id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

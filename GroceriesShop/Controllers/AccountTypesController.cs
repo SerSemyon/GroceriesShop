@@ -19,13 +19,11 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: AccountTypes
         public async Task<IActionResult> Index()
         {
             return View(await _context.AccountTypes.ToListAsync());
         }
 
-        // GET: AccountTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +32,7 @@ namespace GroceriesShop.Controllers
             }
 
             var accountType = await _context.AccountTypes
-                .FirstOrDefaultAsync(m => m.TypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (accountType == null)
             {
                 return NotFound();
@@ -43,18 +41,14 @@ namespace GroceriesShop.Controllers
             return View(accountType);
         }
 
-        // GET: AccountTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: AccountTypes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TypeId,TypeName")] AccountType accountType)
+        public async Task<IActionResult> Create([Bind("Id,TypeName")] AccountType accountType)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +59,6 @@ namespace GroceriesShop.Controllers
             return View(accountType);
         }
 
-        // GET: AccountTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,14 +74,11 @@ namespace GroceriesShop.Controllers
             return View(accountType);
         }
 
-        // POST: AccountTypes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TypeId,TypeName")] AccountType accountType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TypeName")] AccountType accountType)
         {
-            if (id != accountType.TypeId)
+            if (id != accountType.Id)
             {
                 return NotFound();
             }
@@ -102,7 +92,7 @@ namespace GroceriesShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountTypeExists(accountType.TypeId))
+                    if (!AccountTypeExists(accountType.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +106,6 @@ namespace GroceriesShop.Controllers
             return View(accountType);
         }
 
-        // GET: AccountTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,7 +114,7 @@ namespace GroceriesShop.Controllers
             }
 
             var accountType = await _context.AccountTypes
-                .FirstOrDefaultAsync(m => m.TypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (accountType == null)
             {
                 return NotFound();
@@ -134,7 +123,6 @@ namespace GroceriesShop.Controllers
             return View(accountType);
         }
 
-        // POST: AccountTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -151,7 +139,7 @@ namespace GroceriesShop.Controllers
 
         private bool AccountTypeExists(int id)
         {
-            return _context.AccountTypes.Any(e => e.TypeId == id);
+            return _context.AccountTypes.Any(e => e.Id == id);
         }
     }
 }

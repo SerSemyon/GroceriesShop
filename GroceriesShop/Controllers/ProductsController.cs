@@ -19,14 +19,12 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: Products
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.Products.Include(p => p.Category).Include(p => p.Seller);
             return View(await groceriesContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,7 +35,7 @@ namespace GroceriesShop.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Seller)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -46,20 +44,16 @@ namespace GroceriesShop.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
-            ViewData["SellerId"] = new SelectList(_context.Accounts, "AccountId", "AccountId");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Id");
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Price,FilePath,CategoryId,SellerId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,FilePath,CategoryId,SellerId")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -67,12 +61,11 @@ namespace GroceriesShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", product.SellerId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
+            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Id", product.SellerId);
             return View(product);
         }
 
-        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,19 +78,16 @@ namespace GroceriesShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", product.SellerId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
+            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Id", product.SellerId);
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,Price,FilePath,CategoryId,SellerId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,FilePath,CategoryId,SellerId")] Product product)
         {
-            if (id != product.ProductId)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -111,7 +101,7 @@ namespace GroceriesShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.ProductId))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +112,11 @@ namespace GroceriesShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", product.SellerId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
+            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Id", product.SellerId);
             return View(product);
         }
 
-        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,7 +127,7 @@ namespace GroceriesShop.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Seller)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -147,7 +136,6 @@ namespace GroceriesShop.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -164,7 +152,7 @@ namespace GroceriesShop.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.ProductId == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

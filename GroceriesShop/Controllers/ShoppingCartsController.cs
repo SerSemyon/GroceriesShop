@@ -21,14 +21,12 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: ShoppingCarts
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.ShoppingCarts.Include(s => s.Account).Include(s => s.Product);
             return View(await groceriesContext.ToListAsync());
         }
 
-        // GET: ShoppingCarts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,7 +37,7 @@ namespace GroceriesShop.Controllers
             var shoppingCart = await _context.ShoppingCarts
                 .Include(s => s.Account)
                 .Include(s => s.Product)
-                .FirstOrDefaultAsync(m => m.ShoppingCartId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (shoppingCart == null)
             {
                 return NotFound();
@@ -48,17 +46,13 @@ namespace GroceriesShop.Controllers
             return View(shoppingCart);
         }
 
-        // GET: ShoppingCarts/Create
         public IActionResult Create()
         {
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId");
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             return View();
         }
 
-        // POST: ShoppingCarts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShoppingCartId,ProductId,AccountId")] ShoppingCart shoppingCart)
@@ -74,7 +68,6 @@ namespace GroceriesShop.Controllers
             return View(shoppingCart);
         }
 
-        // GET: ShoppingCarts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,19 +80,16 @@ namespace GroceriesShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", shoppingCart.AccountId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", shoppingCart.ProductId);
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", shoppingCart.AccountId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", shoppingCart.ProductId);
             return View(shoppingCart);
         }
 
-        // POST: ShoppingCarts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ShoppingCartId,ProductId,AccountId")] ShoppingCart shoppingCart)
         {
-            if (id != shoppingCart.ShoppingCartId)
+            if (id != shoppingCart.Id)
             {
                 return NotFound();
             }
@@ -113,7 +103,7 @@ namespace GroceriesShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShoppingCartExists(shoppingCart.ShoppingCartId))
+                    if (!ShoppingCartExists(shoppingCart.Id))
                     {
                         return NotFound();
                     }
@@ -129,7 +119,6 @@ namespace GroceriesShop.Controllers
             return View(shoppingCart);
         }
 
-        // GET: ShoppingCarts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,7 +129,7 @@ namespace GroceriesShop.Controllers
             var shoppingCart = await _context.ShoppingCarts
                 .Include(s => s.Account)
                 .Include(s => s.Product)
-                .FirstOrDefaultAsync(m => m.ShoppingCartId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (shoppingCart == null)
             {
                 return NotFound();
@@ -149,7 +138,6 @@ namespace GroceriesShop.Controllers
             return View(shoppingCart);
         }
 
-        // POST: ShoppingCarts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -166,7 +154,7 @@ namespace GroceriesShop.Controllers
 
         private bool ShoppingCartExists(int id)
         {
-            return _context.ShoppingCarts.Any(e => e.ShoppingCartId == id);
+            return _context.ShoppingCarts.Any(e => e.Id == id);
         }
     }
 }

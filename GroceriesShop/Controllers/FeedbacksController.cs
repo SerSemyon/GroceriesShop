@@ -19,14 +19,12 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: Feedbacks
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.Feedbacks.Include(f => f.Account).Include(f => f.Product);
             return View(await groceriesContext.ToListAsync());
         }
 
-        // GET: Feedbacks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,7 +35,7 @@ namespace GroceriesShop.Controllers
             var feedback = await _context.Feedbacks
                 .Include(f => f.Account)
                 .Include(f => f.Product)
-                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -46,20 +44,16 @@ namespace GroceriesShop.Controllers
             return View(feedback);
         }
 
-        // GET: Feedbacks/Create
         public IActionResult Create()
         {
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId");
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             return View();
         }
 
-        // POST: Feedbacks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FeedbackId,ProductId,Rating,TextFeedback,AccountId")] Feedback feedback)
+        public async Task<IActionResult> Create([Bind("Id,Id,Rating,TextFeedback,Id")] Feedback feedback)
         {
             if (ModelState.IsValid)
             {
@@ -67,12 +61,11 @@ namespace GroceriesShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", feedback.AccountId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", feedback.ProductId);
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", feedback.AccountId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", feedback.ProductId);
             return View(feedback);
         }
 
-        // GET: Feedbacks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,19 +78,16 @@ namespace GroceriesShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", feedback.AccountId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", feedback.ProductId);
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", feedback.AccountId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", feedback.ProductId);
             return View(feedback);
         }
 
-        // POST: Feedbacks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FeedbackId,ProductId,Rating,TextFeedback,AccountId")] Feedback feedback)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Id,Rating,TextFeedback,Id")] Feedback feedback)
         {
-            if (id != feedback.FeedbackId)
+            if (id != feedback.Id)
             {
                 return NotFound();
             }
@@ -111,7 +101,7 @@ namespace GroceriesShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeedbackExists(feedback.FeedbackId))
+                    if (!FeedbackExists(feedback.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +112,11 @@ namespace GroceriesShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", feedback.AccountId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", feedback.ProductId);
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", feedback.AccountId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", feedback.ProductId);
             return View(feedback);
         }
 
-        // GET: Feedbacks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,7 +127,7 @@ namespace GroceriesShop.Controllers
             var feedback = await _context.Feedbacks
                 .Include(f => f.Account)
                 .Include(f => f.Product)
-                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -147,7 +136,6 @@ namespace GroceriesShop.Controllers
             return View(feedback);
         }
 
-        // POST: Feedbacks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -164,7 +152,7 @@ namespace GroceriesShop.Controllers
 
         private bool FeedbackExists(int id)
         {
-            return _context.Feedbacks.Any(e => e.FeedbackId == id);
+            return _context.Feedbacks.Any(e => e.Id == id);
         }
     }
 }

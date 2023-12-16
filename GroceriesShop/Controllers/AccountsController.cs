@@ -19,14 +19,12 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
-        // GET: Accounts
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.Accounts.Include(a => a.Role);
             return View(await groceriesContext.ToListAsync());
         }
 
-        // GET: Accounts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,7 +34,7 @@ namespace GroceriesShop.Controllers
 
             var account = await _context.Accounts
                 .Include(a => a.Role)
-                .FirstOrDefaultAsync(m => m.AccountId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -45,19 +43,15 @@ namespace GroceriesShop.Controllers
             return View(account);
         }
 
-        // GET: Accounts/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId");
+            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "Id", "Id");
             return View();
         }
 
-        // POST: Accounts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccountId,Name,LastName,Age,PhoneNumber,Email,Hashpassword,RoleId")] Account account)
+        public async Task<IActionResult> Create([Bind("Id,Name,LastName,Age,PhoneNumber,Email,Hashpassword,RoleId")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -65,11 +59,10 @@ namespace GroceriesShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId", account.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "Id", "Id", account.RoleId);
             return View(account);
         }
 
-        // GET: Accounts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,18 +75,15 @@ namespace GroceriesShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId", account.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "Id", "Id", account.RoleId);
             return View(account);
         }
 
-        // POST: Accounts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AccountId,Name,LastName,Age,PhoneNumber,Email,Hashpassword,RoleId")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,Age,PhoneNumber,Email,Hashpassword,RoleId")] Account account)
         {
-            if (id != account.AccountId)
+            if (id != account.Id)
             {
                 return NotFound();
             }
@@ -107,7 +97,7 @@ namespace GroceriesShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.AccountId))
+                    if (!AccountExists(account.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +108,10 @@ namespace GroceriesShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId", account.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.AccountTypes, "Id", "Id", account.RoleId);
             return View(account);
         }
 
-        // GET: Accounts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,7 +121,7 @@ namespace GroceriesShop.Controllers
 
             var account = await _context.Accounts
                 .Include(a => a.Role)
-                .FirstOrDefaultAsync(m => m.AccountId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -141,7 +130,6 @@ namespace GroceriesShop.Controllers
             return View(account);
         }
 
-        // POST: Accounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -158,7 +146,7 @@ namespace GroceriesShop.Controllers
 
         private bool AccountExists(int id)
         {
-            return _context.Accounts.Any(e => e.AccountId == id);
+            return _context.Accounts.Any(e => e.Id == id);
         }
     }
 }

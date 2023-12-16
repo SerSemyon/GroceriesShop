@@ -5,7 +5,7 @@ namespace GroceriesShop.Models;
 
 public partial class Feedback
 {
-    public int FeedbackId { get; set; }
+    public int Id { get; set; }
 
     public int? ProductId { get; set; }
 

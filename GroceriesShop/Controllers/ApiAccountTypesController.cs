@@ -47,7 +47,7 @@ namespace GroceriesShop.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccountType(int id, AccountType accountType)
         {
-            if (id != accountType.TypeId)
+            if (id != accountType.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace GroceriesShop.Controllers
             _context.AccountTypes.Add(accountType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAccountType", new { id = accountType.TypeId }, accountType);
+            return CreatedAtAction("GetAccountType", new { id = accountType.Id }, accountType);
         }
 
         // DELETE: api/ApiAccountTypes/5
@@ -102,7 +102,7 @@ namespace GroceriesShop.Controllers
 
         private bool AccountTypeExists(int id)
         {
-            return _context.AccountTypes.Any(e => e.TypeId == id);
+            return _context.AccountTypes.Any(e => e.Id == id);
         }
     }
 }

@@ -37,7 +37,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            <tr onclick="selectRow(@item.AccountId)" id="@item.AccountId">
+            <tr onclick="selectRow(@item.Id)" id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -64,6 +64,7 @@
 
 @section Scripts {
     <script>
+        var addres = "/Accounts/";
         var selectedId;
         function selectRow(idObject) {
             if (selectedId) {
@@ -75,24 +76,24 @@
 
         function handlerDetails() {
             if (selectedId) {
-                window.location.href = "/Accounts/Details/" + selectedId;
+                window.location.href = `${addres}Details/${selectedId}`;
             }
         }
 
         function handlerDelete() {
             if (selectedId) {
-                window.location.href = "/Accounts/Delete/" + selectedId;
+                window.location.href = `${addres}Delete/${selectedId}`;
             }
         }
 
         function handlerEdit() {
             if (selectedId) {
-                window.location.href = "/Accounts/Edit/" + selectedId;
+                window.location.href = `${addres}Edit/${selectedId}`;
             }
         }
 
         function handlerCreate() {
-            window.location.href = "/Accounts/Create";
+            window.location.href = `${addres}Create`;
         }
     </script>
 }

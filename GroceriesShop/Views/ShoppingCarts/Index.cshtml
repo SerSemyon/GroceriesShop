@@ -25,12 +25,12 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            <tr onclick="selectRow(@item.ShoppingCartId)" id="@item.ShoppingCartId">
+            <tr onclick="selectRow(@item.Id)" id="@item.Id">
             <td>
-                @Html.DisplayFor(modelItem => item.Account.AccountId)
+                @Html.DisplayFor(modelItem => item.Account.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductId)
+                @Html.DisplayFor(modelItem => item.Product.Id)
             </td>
         </tr>
 }

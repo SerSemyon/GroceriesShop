@@ -36,11 +36,11 @@ public partial class GroceriesContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("account_pkey");
+            entity.HasKey(e => e.Id).HasName("account_pkey");
 
             entity.ToTable("account");
 
-            entity.Property(e => e.AccountId).HasColumnName("account_id");
+            entity.Property(e => e.Id).HasColumnName("account_id");
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.Email)
                 .HasColumnType("character varying")
@@ -67,11 +67,11 @@ public partial class GroceriesContext : DbContext
 
         modelBuilder.Entity<AccountType>(entity =>
         {
-            entity.HasKey(e => e.TypeId).HasName("account_type_pkey");
+            entity.HasKey(e => e.Id).HasName("account_type_pkey");
 
             entity.ToTable("account_type");
 
-            entity.Property(e => e.TypeId).HasColumnName("type_id");
+            entity.Property(e => e.Id).HasColumnName("type_id");
             entity.Property(e => e.TypeName)
                 .HasColumnType("character varying")
                 .HasColumnName("type_name");
@@ -79,11 +79,11 @@ public partial class GroceriesContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("category_pkey");
+            entity.HasKey(e => e.Id).HasName("category_pkey");
 
             entity.ToTable("category");
 
-            entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.Id).HasColumnName("category_id");
             entity.Property(e => e.FilePath)
                 .HasColumnType("character varying")
                 .HasColumnName("file_path");
@@ -94,11 +94,11 @@ public partial class GroceriesContext : DbContext
 
         modelBuilder.Entity<Feedback>(entity =>
         {
-            entity.HasKey(e => e.FeedbackId).HasName("feedback_pkey");
+            entity.HasKey(e => e.Id).HasName("feedback_pkey");
 
             entity.ToTable("feedback");
 
-            entity.Property(e => e.FeedbackId).HasColumnName("feedback_id");
+            entity.Property(e => e.Id).HasColumnName("feedback_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Rating).HasColumnName("rating");
@@ -119,11 +119,11 @@ public partial class GroceriesContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("product_pkey");
+            entity.HasKey(e => e.Id).HasName("product_pkey");
 
             entity.ToTable("product");
 
-            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Id).HasColumnName("product_id");
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
             entity.Property(e => e.FilePath)
                 .HasColumnType("character varying")
@@ -147,11 +147,11 @@ public partial class GroceriesContext : DbContext
 
         modelBuilder.Entity<ShoppingCart>(entity =>
         {
-            entity.HasKey(e => e.ShoppingCartId).HasName("shopping_cart_pkey");
+            entity.HasKey(e => e.Id).HasName("shopping_cart_pkey");
 
             entity.ToTable("shopping_cart");
 
-            entity.Property(e => e.ShoppingCartId).HasColumnName("shopping_cart_id");
+            entity.Property(e => e.Id).HasColumnName("shopping_cart_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
 
