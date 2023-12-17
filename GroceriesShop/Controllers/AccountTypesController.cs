@@ -19,6 +19,7 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
+        [Route("AccountTypes")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.AccountTypes.ToListAsync());

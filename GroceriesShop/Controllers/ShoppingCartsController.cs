@@ -21,6 +21,7 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
+        [Route("ShoppingCarts")]
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.ShoppingCarts.Include(s => s.Account).Include(s => s.Product);

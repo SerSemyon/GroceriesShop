@@ -19,6 +19,7 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
+        [Route("Feedbacks")]
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.Feedbacks.Include(f => f.Account).Include(f => f.Product);

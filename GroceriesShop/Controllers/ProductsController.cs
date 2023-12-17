@@ -19,6 +19,7 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
+        [Route("Groceries")]
         public async Task<IActionResult> Index()
         {
             var groceriesContext = _context.Products.Include(p => p.Category).Include(p => p.Seller);
@@ -46,8 +47,8 @@ namespace GroceriesShop.Controllers
 
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
-            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Name");
             return View();
         }
 
@@ -61,8 +62,8 @@ namespace GroceriesShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Id", product.SellerId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            ViewData["SellerId"] = new SelectList(_context.Accounts, "Id", "Name", product.SellerId);
             return View(product);
         }
 
