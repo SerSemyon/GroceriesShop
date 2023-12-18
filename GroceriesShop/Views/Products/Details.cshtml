@@ -4,45 +4,69 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>
+    @Html.DisplayFor(model => model.Name)
+</h1>
+
+@if (Model.FilePath != null)
+{
+    <img src="@Url.Content("~/images/products/" + Model.FilePath.ToString())"
+         Height="200"
+         Width="500"/>
+}
 
 <div>
-    <h4>Product</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Цена
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Price) &#8381;
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            Категория
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Category.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FilePath)
+            Продавец
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FilePath)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Seller)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Seller.Id)
+            @Model.Seller.Name @Model.Seller.LastName
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div id="rootComments">
+    <div class="comment-card">
+        <h1 class="comment-head"> Хорошая шаурма </h1>
+        <p class="comment-rating"> 4/5 </p>
+        <p> Могло быть и лучше </p>
+    </div>
+    <div class="comment-card">
+        <h1 class="comment-head"> Не рекомендую </h1>
+        <p class="comment-rating"> 2/5 </p>
+        <p> Не вкусно </p>
+    </div>
+</div>
+
+<h4> Написать отзыв </h4>
+<div class="comment-card">
+    <div>
+        Заголовок:<br />
+        <input id="head"/>
+        <p class="error-alert" id="errorHead"></p>
+    </div>
+    <div>
+        Оценка:<br />
+        <input id="rating" type="number" />
+        <p class="error-alert" id="errorRating"></p>
+    </div>
+    <div>
+        Текст:<br />
+        <input id="text"/>
+        <p class="error-alert" id="errorText"></p>
+    </div>
 </div>

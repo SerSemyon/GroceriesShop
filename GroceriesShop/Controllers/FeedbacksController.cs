@@ -19,6 +19,24 @@ namespace GroceriesShop.Controllers
             _context = context;
         }
 
+        [Route("api/Feedbacks/{productId?}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Feedback>>> GetFeedbacks(int? productId)
+        {
+            return _context.Feedbacks.Where(f => f.ProductId == productId).ToList();
+        }
+
+        [Route("api/Feedbacks/{productId?}")]
+        [HttpPost]
+        public async Task<ActionResult<Feedback>> PostFeedback(int? productId, [FromBody]Feedback feedback)
+        {
+            feedback.ProductId = productId;
+            _context.Feedbacks.Add(feedback);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetFeedback", new { id = feedback.Id }, feedback);
+        }
+
         [Route("Feedbacks")]
         public async Task<IActionResult> Index()
         {
@@ -157,3 +175,4 @@ namespace GroceriesShop.Controllers
         }
     }
 }
+
