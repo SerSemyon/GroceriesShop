@@ -26,6 +26,13 @@ namespace GroceriesShop.Controllers
             return View(await groceriesContext.ToListAsync());
         }
 
+        [Route("CheapShawarma")]
+        public async Task<IActionResult> CheapShawarma()
+        {
+            var groceriesContext = _context.Products.Include(p => p.Category).Include(p => p.Seller).Where(a => a.Category.Name == "Шаурма").Where(a => a.Price < 200);
+            return View("Index", await groceriesContext.ToListAsync());
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

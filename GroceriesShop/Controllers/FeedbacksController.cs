@@ -44,6 +44,13 @@ namespace GroceriesShop.Controllers
             return View(await groceriesContext.ToListAsync());
         }
 
+        [Route("oldFeedbacks")]
+        public async Task<IActionResult> OldFeedbacks()
+        {
+            var groceriesContext = _context.Feedbacks.Include(f => f.Account).Include(f => f.Product).Where(a => a.Account.Age > 30).Where(a => a.Product.Name == "Шаурма классическая");
+            return View("Index",await groceriesContext.ToListAsync());
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
