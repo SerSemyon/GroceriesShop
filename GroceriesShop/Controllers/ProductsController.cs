@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GroceriesShop;
 using GroceriesShop.Models;
 
 namespace GroceriesShop.Controllers
@@ -29,7 +24,11 @@ namespace GroceriesShop.Controllers
         [Route("CheapShawarma")]
         public async Task<IActionResult> CheapShawarma()
         {
-            var groceriesContext = _context.Products.Include(p => p.Category).Include(p => p.Seller).Where(a => a.Category.Name == "Шаурма").Where(a => a.Price < 200);
+            var groceriesContext = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Seller)
+                .Where(a => a.Category.Name == "Шаурма")
+                .Where(a => a.Price < 200);
             return View("Index", await groceriesContext.ToListAsync());
         }
 

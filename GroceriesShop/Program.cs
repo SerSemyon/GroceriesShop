@@ -1,12 +1,7 @@
 using GroceriesShop.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -20,7 +15,6 @@ namespace GroceriesShop
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
-            //builder.Services.AddAuthentication("Bearer").AddCookie();
             builder.Services.AddDbContext<GroceriesContext>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -38,15 +32,13 @@ namespace GroceriesShop
                 options.Cookie.IsEssential = true;
             });
 
-            builder.Services.AddAuthorization();            // добавление сервисов авторизации
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -66,7 +58,6 @@ namespace GroceriesShop
             app.MapGet("/login", async (HttpContext context) =>
             {
                 context.Response.ContentType = "text/html; charset=utf-8";
-                // html-форма для ввода логина/пароля
                 string loginForm = @"<!DOCTYPE html>
                     <html>
                     <head>
@@ -94,17 +85,13 @@ namespace GroceriesShop
             app.MapPost("/login", async (string? returnUrl, HttpContext context) =>
             {
                 GroceriesContext db = new GroceriesContext();
-                // получаем из формы phone_number и пароль
                 var form = context.Request.Form;
-                // если phone_number и/или пароль не установлены, посылаем статусный код ошибки 400
                 if (!form.ContainsKey("phone_number") || !form.ContainsKey("password"))
                     return Results.BadRequest("Номер иелефона и/или пароль не установлены");
                 string phone_number = form["phone_number"];
                 string password = form["password"];
 
-                // находим пользователя 
                 Account? person = db.Accounts.FirstOrDefault(p => (p.PhoneNumber == phone_number) && (p.Hashpassword == password));
-                // если пользователь не найден, отправляем статусный код 401
                 if (person is null) return Results.Redirect("/login");
                 var claims = new List<Claim>
                 {
@@ -130,99 +117,13 @@ namespace GroceriesShop
             app.UseSession();
 
             app.Run();
-
-
-            //var builder = WebApplication.CreateBuilder(args);
-
-            //// Add services to the container.
-            //builder.Services.AddControllersWithViews();
-            //builder.Services.AddDbContext<GroceriesContext>();
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            // указывает, будет ли валидироваться издатель при валидации токена
-            //            ValidateIssuer = true,
-            //            // строка, представляющая издателя
-            //            ValidIssuer = AuthOptions.ISSUER,
-            //            // будет ли валидироваться потребитель токена
-            //            ValidateAudience = true,
-            //            // установка потребителя токена
-            //            ValidAudience = AuthOptions.AUDIENCE,
-            //            // будет ли валидироваться время существования
-            //            ValidateLifetime = true,
-            //            // установка ключа безопасности
-            //            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            //            // валидация ключа безопасности
-            //            ValidateIssuerSigningKey = true,
-            //        };
-            //    });
-
-            //var app = builder.Build();
-
-            //// Configure the HTTP request pipeline.
-            //if (!app.Environment.IsDevelopment())
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    app.UseHsts();
-            //}
-
-            //app.UseHttpsRedirection();
-            ////app.UseDefaultFiles();
-            //app.UseStaticFiles();
-
-            //app.UseRouting();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
-
-            //app.MapPost("/login", (Account loginData) =>
-            //{
-            //    // находим пользователя 
-            //    GroceriesContext groceriesContext = new GroceriesContext();
-            //    Account? person = groceriesContext.Accounts.FirstOrDefault(p => p.PhoneNumber == loginData.PhoneNumber && p.Hashpassword == loginData.Hashpassword);
-            //    // если пользователь не найден, отправляем статусный код 401
-            //    if (person is null) return Results.Unauthorized();
-
-            //    var claims = new List<Claim>
-            //    {
-            //        new Claim(ClaimTypes.Name, person.PhoneNumber),
-            //        new Claim(ClaimsIdentity.DefaultRoleClaimType, person.RoleId.ToString()),
-            //    };
-            //    // создаем JWT-токен
-            //    var jwt = new JwtSecurityToken(
-            //            issuer: AuthOptions.ISSUER,
-            //            audience: AuthOptions.AUDIENCE,
-            //            claims: claims,
-            //            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-            //            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            //    var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            //    // формируем ответ
-            //    var response = new
-            //    {
-            //        access_token = encodedJwt,
-            //        username = person.Email
-            //    };
-
-            //    return Results.Json(response);
-            //});
-
-            //app.Map("/data", [Authorize] () => new { message = "Hello World!" });
-
-            //app.MapControllerRoute(
-            //    name: "default",
-            //    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            //app.Run();
         }
     }
     public class AuthOptions
     {
-        public const string ISSUER = "MyAuthServer"; // издатель токена
-        public const string AUDIENCE = "MyAuthClient"; // потребитель токена
-        const string KEY = "mysupersecret_secretkey!123qwertyblablacarLOOOOOOOOL";   // ключ для шифрации
+        public const string ISSUER = "MyAuthServer";
+        public const string AUDIENCE = "MyAuthClient";
+        const string KEY = "mysupersecret_secretkey!123qwertyblablacarLOOOOOOOOL";
         public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
     }

@@ -12,51 +12,9 @@
     </style>
 </head>
 <body>
-    <div class="form-inputs">
-        <h2>Список пользователей</h2>
-        <input type="hidden" id="id" />
-        <div class="pair-input">
-            <div class="first-in-pair">
-                Имя:<br />
-                <input id="name"/>
-                <p class="error-alert" id="errorName"></p>
-            </div>
-            <div class="second-in-pair">
-                Фамилия:<br />
-                <input id="lastName" />
-                <p class="error-alert" id="errorLastName"></p>
-            </div>
-        </div>
-
-        <div>
-            Возраст:<br />
-            <input id="age" type="number" />
-            <p class="error-alert" id="errorAge"></p>
-        </div>
-
-        <div class="pair-input">
-            <div class="first-in-pair">
-                Электронная почта:<br />
-                <input id="email" type="email" />
-                <p class="error-alert" id="errorEmail"></p>
-            </div>
-            <div class="second-in-pair">
-                Телефон: <br />
-                <input id="phoneNumber" />
-                <p class="error-alert" id="errorPhone"></p>
-            </div>
-        </div>
-        <div>
-            Пароль:<br />
-            <input id="hashPassword" type="password" />
-            <p class="error-alert" id="errorPassword"></p>
-        </div>
-        <div>
-            <button id="saveBtn" class="users-button">Сохранить</button>
-            <button class="users-button" onclick="handleDelete()">Удалить запись</button>
-            <button id="resetBtn" class="users-button">Очистить поля</button>
-        </div>
-    </div>
+    <button onclick="handlerDetails()">Подробнее</button>
+    <button onclick="handlerDelete()">Удалить</button>
+    <button onclick="handlerCreate()">Создать</button>
     <table>
         <thead>
             <tr>
@@ -84,10 +42,17 @@
 
     <script>
         var addressApi = "/api/Accounts/";
-        var regPhone = /^[+]?\d{11}$/;
-        var regEmail = /[a-zA-Z0-9._-]+@@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+/;
-        var regPassword = /.*([a-z]+[A-Z]+[0-9]+|[a-z]+[0-9]+[A-Z]+|[A-Z]+[a-z]+[0-9]+|[A-Z]+[0-9]+[a-z]+|[0-9]+[a-z]+[A-Z]+|[0-9]+[A-Z]+[a-z]+).*/;
         var selectedId;
+
+        function handlerDetails() {
+            if (selectedId) {
+                window.location.href = `/Accounts/Edit/${selectedId}`;
+            }
+        }
+
+        function handlerCreate() {
+            window.location.href = `/Accounts/Create`;
+        }
         
         async function getAll() {
             const response = await fetch(addressApi, {
@@ -101,44 +66,7 @@
             }
         }
 
-        async function createOne(newItem) {
-            console.log(newItem)
-
-            const response = await fetch(`${addressApi}post`, {
-                method: "POST",
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify(newItem)
-            });
-            if (response.ok === true) {
-                const itemRow = await response.json();
-                document.querySelector("tbody").append(row(itemRow));
-            }
-            else {
-                const error = await response.json();
-                console.log(error.message);
-            }
-        }
-
-        async function editOne(id, newData) {
-            let newItem = {
-                id
-            }
-            Object.assign(newItem, newData);
-            const response = await fetch(`${addressApi}put/${id}`, {
-                method: "PUT",
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify(newItem)
-            });
-            if (response.ok === true) {
-                document.querySelector(`tr[data-rowid='${id}']`).replaceWith(row(newItem));
-            }
-            else {
-                const error = await response.json();
-                console.log(error.message);
-            }
-        }
-
-        function handleDelete() {
+        function handlerDelete() {
             if (selectedId) {
                 deleteOne(selectedId);
             }
@@ -152,7 +80,6 @@
             if (response.ok === true) {
                 document.querySelector(`tr[data-rowid='${id}']`).remove();
                 selectedId = null;
-                resetForm();
             }
             else {
                 const error = await response.json();
@@ -161,7 +88,6 @@
         }
 
         function selectRow(id) {
-            getOne(id);
             if (selectedId) {
                 document.querySelector(`tr[data-rowid='${selectedId}']`).className = "";
             }
@@ -197,119 +123,6 @@
 
             return tr;
         }
-
-        async function getOne(id) {
-            const response = await fetch(`${addressApi}${id}`, {
-                method: "GET",
-                headers: { "Accept": "application/json" }
-            });
-            if (response.ok === true) {
-                const itemRow = await response.json();
-                document.getElementById("id").value = itemRow.id;
-                document.getElementById("name").value = itemRow.name;
-                document.getElementById("lastName").value = itemRow.lastName;
-                document.getElementById("age").value = itemRow.age;
-                document.getElementById("email").value = itemRow.email;
-                document.getElementById("phoneNumber").value = itemRow.phoneNumber;
-                document.getElementById("hashPassword").value = itemRow.hashPassword;
-            }
-            else {
-                const error = await response.json();
-                console.log(error.message);
-            }
-        }
-
-        function resetForm() {
-            document.getElementById("id").value = "";
-            document.getElementById("name").value = "";
-            document.getElementById("lastName").value = "";
-            document.getElementById("age").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("phoneNumber").value = "";
-            document.getElementById("hashPassword").value = "";
-        }
-
-        document.getElementById("resetBtn").addEventListener("click", () => resetForm());
-        document.getElementById("saveBtn").addEventListener("click", async () => {
-            var hasError = false;
-            name = document.getElementById("name").value;
-            lastName = document.getElementById("lastName").value;
-            age = document.getElementById("age").value;
-            email = document.getElementById("email").value;
-            phoneNumber = document.getElementById("phoneNumber").value;
-            hashPassword = document.getElementById("hashPassword").value;
-
-            if (name.length < 1) {
-                document.getElementById("errorName").textContent = 'Введите имя';
-                hasError = true;
-            } else if (name.length < 2) {
-                document.getElementById("errorName").textContent = 'Имя не может состоять из одного символа';
-                hasError = true;
-            } else {
-                document.getElementById("errorName").textContent = '';
-            }
-
-            if (lastName.length < 1) {
-                document.getElementById("errorLastName").textContent = 'Введите фамилию';
-                hasError = true;
-            } else if (lastName.length < 2) {
-                document.getElementById("errorLastName").textContent = 'Фамилия не может состоять из одного символа';
-                hasError = true;
-            } else {
-                document.getElementById("errorLastName").textContent = '';
-            }
-
-            if (age < 5) {
-                document.getElementById("errorAge").textContent = 'Вам не может быть меньше 5 лет';
-            } else if (age > 125) {
-                document.getElementById("errorAge").textContent = 'Возраст не может быть больше 125';
-            } else if (age == '') {
-                document.getElementById("errorAge").textContent = 'Укажите возраст';
-            } else {
-                document.getElementById("errorAge").textContent = '';
-            }
-
-            if (!regEmail.test(String(email).toLowerCase())) {
-                document.getElementById("errorEmail").textContent = 'Некорректный email';
-                hasError = true;
-            } else {
-                document.getElementById("errorEmail").textContent = '';
-            }
-
-            if (!regPhone.test(String(phoneNumber).toLowerCase())) {
-                document.getElementById("errorPhone").textContent = 'Телефон должен состоять из 11 цифр';
-                hasError = true;
-            } else {
-                document.getElementById("errorPhone").textContent = '';
-            }
-
-            let validPassword = regPassword.test(hashPassword)
-            if (!validPassword) {
-                document.getElementById("errorPassword").textContent = 'Пароль должен состоять из цифр, заглавных и строчных букв латинского алфавита';
-                hasError = true;
-            } else {
-                document.getElementById("errorPassword").textContent = '';
-            }
-
-            if (hasError) {
-                return;
-            }
-
-            const id = document.getElementById("id").value;
-            const currentItem = {
-                name,
-                lastName,
-                age,
-                email,
-                phoneNumber,
-                hashPassword
-            }
-            if (id === "")
-                await createOne(currentItem);
-            else
-                await editOne(id, currentItem);
-            resetForm();
-        });
 
         getAll();
     </script>

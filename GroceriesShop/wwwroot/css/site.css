@@ -126,3 +126,7 @@ input {
     font-style: normal;
     margin-top: 4px;
 }
+
+.selected-user {
+    background-color: white;
+}

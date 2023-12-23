@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace GroceriesShop.Models;
+﻿namespace GroceriesShop.Models;
 
 public partial class AccountType
 {
